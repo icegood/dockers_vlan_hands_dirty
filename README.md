@@ -1,2 +1,2 @@
-# dockers_vlan_hands_dirty
-docker vlan stuff
+# purpose
+example to understand how vlan goes over tap interfaces
