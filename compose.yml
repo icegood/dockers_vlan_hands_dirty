@@ -1,0 +1,45 @@
+version: "3.8"
+name: "vlan tests"
+networks:
+  vlan10:
+    name: vlan10
+    driver: ipvlan
+    driver_opts:
+      #com.docker.network.enable_ipv6: "true"
+      # tagged as '10' instead vlan10
+      parent: "${HOST_INTERFACE?no host interface}.10"
+    attachable: true
+    #enable_ipv6: true
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.41.0/24
+          gateway: 192.168.41.1
+        
+    labels:
+      description: "network with fixed adresses"
+services:
+  vlan_test1:
+    build: build/
+    container_name: vlan_test1
+    cap_add:
+      - ALL
+    image: vlan_test
+    networks:
+      vlan10:
+        aliases:
+          - vlan_test1
+        ipv4_address: 192.168.41.51
+  vlan_test2:
+    build: build/
+    container_name: vlan_test2
+    cap_add:
+      - ALL
+    image: vlan_test
+    networks:
+      vlan10:
+          aliases:
+            - vlan_test2
+          ipv4_address: 192.168.41.52
+
